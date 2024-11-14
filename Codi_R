@@ -1,0 +1,77 @@
+####setwd("C:/Users/Guillem/Desktop/Guillem/01_Master/2024_Semestre_3/Visualització de dades/Bloc_2")###
+#### Hexagon binning####
+
+library(ggplot2)
+library(hexbin)
+
+# Hexagon binning per comparar el preu dels diamants en funcio dels quirats
+ggplot(diamonds, aes(x = carat, y = price)) +
+  geom_hex(bins = 30) +
+  scale_fill_viridis_c() +
+  labs(title = "Hexbin plot pel peru dels diamants en funció dels quirats",
+       subtitle = "A partir del dataset diamonds amb més de 50.000 observacions",
+    x = "Quirats",
+    y = "Preu (en $)",
+    fill = "Freqüència") +
+  theme_bw()
+
+
+#### Icon chart ####
+
+library(dplyr)
+library(ggtext)
+library(ggimage)
+
+data_summary <- mpg %>%
+  group_by(manufacturer) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count))
+
+data_summary$manufacturer
+
+#Carreguem les imatges des del directori(prèviament descarregades)
+data_summary$logo <- c(
+  "dodge-logo.png", 
+  "toyota.png",
+  "Volkswagen.PNG", 
+  "ford.png", 
+  "chevy.png",
+  "audi.png",  
+  "hyundai.PNG",
+  "Subaru.jpg",
+  "nissan.png",
+  "Honda.PNG",
+  "Jeep_logo.png",
+  "Pontiac-Logo.png",
+  "Land_rover.png",
+  "mercury.png",
+  "Lincoln.png"
+)
+
+# Gràfic
+ggplot(data_summary, aes(x = reorder(manufacturer, count), y = count)) +
+  geom_image(aes(image = logo), size = 0.1, by = "height") + 
+  labs(title = "Cotxes per marca",
+       subtitle = "A partir del dataset mpg amb dades de 234 models",
+    x = "Marca",
+    y = "Freqüència"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+#### Sanky Diagrams ####
+
+library(ggalluvial)
+library(networkD3)
+library(jsonlite)
+
+# Càrrega de les dades
+URL <- "https://cdn.rawgit.com/christophergandrud/networkD3/master/JSONdata/energy.json"
+Energy <- jsonlite::fromJSON(URL)
+
+#Gràfic
+sankeyNetwork(Links = Energy$links, Nodes = Energy$nodes,
+              Source = "source", Target = "target",
+              Value = "value", NodeID = "name",
+              units = "TWh", fontSize = 12, nodeWidth = 30)
