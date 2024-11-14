@@ -1,4 +1,4 @@
-####setwd("C:/Users/Guillem/Desktop/Guillem/01_Master/2024_Semestre_3/Visualització de dades/Bloc_2")###
+####setwd("...")###
 #### Hexagon binning####
 
 library(ggplot2)
